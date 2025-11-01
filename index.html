@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Strength Checker | Automata Simulation</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<style>
+    :root {
+        --bg-gradient-dark: radial-gradient(circle at top, #141e30, #0c0c1d);
+        --bg-gradient-light: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        --text-dark: #fff;
+        --text-light: #ffffff;
+        --primary-dark: #00d9ff;
+        --primary-light: #ffffff;
+        --accent-dark: #00ff9f;
+        --accent-light: #ffd700;
+        --container-dark: rgba(255,255,255,0.07);
+        --container-light: rgba(255,255,255,0.25);
+        --input-dark: rgba(255,255,255,0.1);
+        --input-light: rgba(255,255,255,0.35);
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--bg-gradient-dark);
+        color: var(--text-dark);
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background 0.8s ease, color 0.6s ease, box-shadow 1s ease;
+    }
+
+    header {
+        width: 100%;
+        padding: 20px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(8px);
+        text-align: center;
+        font-size: 1.5em;
+        color: var(--primary-dark);
+        letter-spacing: 1px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.5s ease;
+    }
+
+    .container {
+        margin-top: 40px;
+        background: var(--container-dark);
+        padding: 30px 40px;
+        border-radius: 16px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        width: 420px;
+        text-align: center;
+        transition: all 0.6s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    input {
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        width: 100%;
+        font-size: 1em;
+        outline: none;
+        text-align: center;
+        margin-bottom: 15px;
+        background: var(--input-dark);
+        color: inherit;
+        transition: all 0.6s ease;
+    }
+
+    input::placeholder {
+        color: rgba(255,255,255,0.6);
+        transition: color 0.6s ease;
+    }
+
+    .strength-meter {
+        width: 100%;
+        height: 8px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.1);
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+    .meter-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, red, orange, yellow, green, cyan);
+        transition: width 0.3s ease;
+    }
+
+    .strength {
+        margin-top: 12px;
+        font-weight: bold;
+    }
+
+    .tips {
+        font-size: 0.9em;
+        color: #bbb;
+        margin-top: 15px;
+        text-align: left;
+    }
+
+    .automata-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    svg {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+
+    .state {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 3;
+        transition: stroke 0.3s, stroke-width 0.3s;
+    }
+
+    .active {
+        stroke: var(--accent-dark);
+        stroke-width: 6;
+        filter: drop-shadow(0 0 10px var(--accent-dark));
+    }
+
+    text {
+        fill: inherit;
+        font-size: 14px;
+    }
+
+    .transition {
+        stroke: var(--primary-dark);
+        stroke-width: 2;
+        marker-end: url(#arrow);
+        opacity: 0.6;
+        transition: opacity 0.3s, stroke 0.3s;
+    }
+
+    .transition.active {
+        opacity: 1;
+        stroke: var(--accent-dark);
+    }
+
+    .info {
+        margin-top: 15px;
+        font-size: 0.85em;
+        color: #aaa;
+    }
+
+    .contact-icons {
+        margin-top: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .contact-icons a {
+        color: var(--primary-dark);
+        font-size: 28px;
+        transition: 0.3s;
+    }
+
+    .contact-icons a:hover {
+        color: var(--accent-dark);
+        transform: scale(1.2);
+    }
+
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 25px;
+        background: none;
+        border: 2px solid var(--primary-dark);
+        color: var(--primary-dark);
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.4s ease;
+    }
+
+    .theme-toggle:hover {
+        background: var(--primary-dark);
+        color: #fff;
+        transform: rotate(180deg);
+    }
+
+    /* Enhanced Light Mode */
+    body.light {
+        background: var(--bg-gradient-light);
+        color: var(--text-light);
+    }
+    
+    body.light header {
+        color: var(--primary-light);
+        background: rgba(255,255,255,0.2);
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(12px);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    body.light .container {
+        background: var(--container-light);
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    body.light input {
+        background: var(--input-light);
+        color: var(--text-light);
+        border: 1px solid rgba(255,255,255,0.4);
+        font-weight: 500;
+    }
+    
+    body.light input::placeholder {
+        color: rgba(255,255,255,0.8);
+    }
+    
+    body.light .strength-meter {
+        background: rgba(255,255,255,0.3);
+    }
+    
+    body.light .tips {
+        color: rgba(255,255,255,0.95);
+        font-weight: 500;
+    }
+    
+    body.light .info {
+        color: rgba(255,255,255,0.9);
+        font-weight: 500;
+    }
+    
+    body.light .state {
+        stroke: rgba(255,255,255,0.6);
+    }
+    
+    body.light .transition {
+        stroke: var(--primary-light);
+    }
+    
+    body.light .transition.active {
+        stroke: var(--accent-light);
+        filter: drop-shadow(0 0 8px var(--accent-light));
+    }
+    
+    body.light .active {
+        stroke: var(--accent-light);
+        filter: drop-shadow(0 0 15px var(--accent-light));
+    }
+    
+    body.light .contact-icons a {
+        color: var(--primary-light);
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    body.light .contact-icons a:hover {
+        color: var(--accent-light);
+        filter: drop-shadow(0 0 10px var(--accent-light));
+    }
+    
+    body.light .theme-toggle {
+        border-color: rgba(255,255,255,0.8);
+        color: rgba(255,255,255,1);
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+    }
+    
+    body.light .theme-toggle:hover {
+        background: rgba(255,255,255,0.35);
+        color: #ffffff;
+        border-color: rgba(255,255,255,1);
+    }
+
+    body.light #arrow path {
+        fill: #ffffff;
+    }
+
+    @keyframes glowPulse {
+        0% { box-shadow: 0 8px 32px var(--glow-color); }
+        50% { box-shadow: 0 8px 60px var(--glow-color); }
+        100% { box-shadow: 0 8px 32px var(--glow-color); }
+    }
+
+    body.light.glow .container {
+        animation: glowPulse 1.2s ease;
+    }
+</style>
+</head>
+<body>
+
+<header>Finite Automata Password Strength Checker</header>
+<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+<div class="container">
+    <h2>Check Your Password</h2>
+    <input type="password" id="password" placeholder="Enter your password..." oninput="checkPassword()">
+    
+    <div class="strength-meter">
+        <div class="meter-fill" id="meter"></div>
+    </div>
+
+    <div class="strength" id="strength">Start typing...</div>
+
+    <div class="tips" id="tips"></div>
+
+    <div class="automata-container">
+        <svg id="automata" viewBox="0 0 520 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#00aaff" />
+                </marker>
+            </defs>
+
+            <circle id="q0" class="state" cx="60" cy="100" r="30"></circle>
+            <circle id="q1" class="state" cx="180" cy="100" r="30"></circle>
+            <circle id="q2" class="state" cx="300" cy="100" r="30"></circle>
+            <circle id="q3" class="state" cx="420" cy="100" r="30"></circle>
+            <circle cx="420" cy="100" r="25" stroke="#00ff9f" stroke-width="2" fill="none"></circle>
+
+            <line id="t1" x1="90" y1="100" x2="150" y2="100" class="transition" />
+            <line id="t2" x1="210" y1="100" x2="270" y2="100" class="transition" />
+            <line id="t3" x1="330" y1="100" x2="390" y2="100" class="transition" />
+
+            <text x="50" y="105">q0</text>
+            <text x="170" y="105">q1</text>
+            <text x="290" y="105">q2</text>
+            <text x="410" y="105">q3</text>
+        </svg>
+    </div>
+
+    <div class="info">
+        q0: Start • q1: Has Uppercase • q2: Has Number • q3: Has Special Symbol (Accepting)
+    </div>
+
+    <div class="contact-icons">
+        <a href="mailto:ss6015@srmist.edu.in"><i class='bx bxs-envelope'></i></a>
+        <a href="https://www.linkedin.com/in/usersourav" target="_blank"><i class='bx bxl-linkedin-square'></i></a>
+        <a href="https://github.com/Usersourav" target="_blank"><i class='bx bxl-github'></i></a>
+        <a href="tel:+919315220595"><i class='bx bxs-phone'></i></a>
+    </div>
+</div>
+
+<script>
+function checkPassword() {
+    const password = document.getElementById("password").value;
+    const strengthDiv = document.getElementById("strength");
+    const meter = document.getElementById("meter");
+    const tipsDiv = document.getElementById("tips");
+    const states = ["q0","q1","q2","q3"];
+    const transitions = ["t1","t2","t3"];
+    const body = document.body;
+
+    states.forEach(id => document.getElementById(id).classList.remove("active"));
+    transitions.forEach(id => document.getElementById(id).classList.remove("active"));
+    body.classList.remove("glow");
+
+    let hasUpper = /[A-Z]/.test(password);
+    let hasNumber = /[0-9]/.test(password);
+    let hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    let activeState = 0;
+    if (hasUpper) activeState = 1;
+    if (hasUpper && hasNumber) activeState = 2;
+    if (hasUpper && hasNumber && hasSymbol) activeState = 3;
+
+    document.getElementById(states[activeState]).classList.add("active");
+    if (activeState > 0) document.getElementById(transitions[0]).classList.add("active");
+    if (activeState > 1) document.getElementById(transitions[1]).classList.add("active");
+    if (activeState > 2) document.getElementById(transitions[2]).classList.add("active");
+
+    let strengthText = "";
+    let tips = [];
+    let glowColor = "transparent";
+
+    switch(activeState){
+        case 0:
+            strengthText = "Weak 🔴";
+            meter.style.width = "25%";
+            glowColor = "rgba(255, 82, 82, 0.5)";
+            tips = ["Add at least one uppercase letter", "Add a number", "Add a special symbol"];
+            break;
+        case 1:
+            strengthText = "Fair 🟠";
+            meter.style.width = "50%";
+            glowColor = "rgba(255, 177, 66, 0.5)";
+            tips = ["Add a number", "Add a special symbol"];
+            break;
+        case 2:
+            strengthText = "Strong 🟡";
+            meter.style.width = "75%";
+            glowColor = "rgba(255, 215, 0, 0.5)";
+            tips = ["Add a special symbol for max strength"];
+            break;
+        case 3:
+            strengthText = "Very Strong 🟢";
+            meter.style.width = "100%";
+            glowColor = "rgba(80, 250, 123, 0.5)";
+            tips = ["Perfect! Your password meets all conditions."];
+            break;
+    }
+
+    strengthDiv.textContent = strengthText;
+    tipsDiv.innerHTML = tips.map(t => `• ${t}`).join("<br>");
+
+    if (body.classList.contains("light")) {
+        body.style.setProperty("--glow-color", glowColor);
+        body.classList.add("glow");
+    }
+}
+
+function toggleTheme() {
+    const body = document.body;
+    const toggle = document.querySelector('.theme-toggle');
+    body.classList.toggle('light');
+    toggle.textContent = body.classList.contains('light') ? "🌞" : "🌙";
+}
+</script>
+
+</body>
+</html>
