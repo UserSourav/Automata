@@ -12,19 +12,11 @@
     --bg: #080c14;
     --surface: #0d1422;
     --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.04);
     --text: #e8eaf0;
     --muted: #4a5568;
-    --c0: #334155;
-    --c1: #f97316;
-    --c2: #eab308;
-    --c3: #22c55e;
-    --c4: #06b6d4;
-    --glow0: rgba(249,115,22,0.3);
-    --glow1: rgba(234,179,8,0.3);
-    --glow2: rgba(34,197,94,0.3);
-    --glow3: rgba(6,182,212,0.3);
-    --active-color: #e8eaf0;
-    --active-glow: rgba(232,234,240,0.15);
+    --muted2: #2d3748;
+    --c0: #f97316; --c1: #eab308; --c2: #22c55e; --c3: #06b6d4;
   }
 
   body {
@@ -35,20 +27,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 24px;
+    justify-content: flex-start;
+    padding: 32px 24px 64px;
     overflow-x: hidden;
   }
 
-  /* Background grid */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 44px 44px;
     pointer-events: none;
     z-index: 0;
   }
@@ -58,532 +49,615 @@
     z-index: 1;
     width: 100%;
     max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   /* Header */
-  .header {
-    margin-bottom: 32px;
-  }
-
+  .header { margin-bottom: 8px; }
   .header-tag {
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-size: 10px;
+    letter-spacing: 0.22em;
     color: var(--muted);
     text-transform: uppercase;
     margin-bottom: 8px;
   }
-
   .header h1 {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
-
-  .header h1 span {
-    color: var(--muted);
-  }
+  .header h1 span { color: var(--muted); }
 
   /* Card */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
   }
 
-  /* Input section */
+  /* Input */
   .input-section {
-    padding: 28px 28px 24px;
+    padding: 24px 24px 20px;
     border-bottom: 1px solid var(--border);
   }
 
-  .input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
+  .input-wrapper { position: relative; display: flex; align-items: center; }
 
   .input-wrapper input {
     width: 100%;
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 14px 52px 14px 16px;
+    padding: 13px 48px 13px 16px;
     font-family: 'Space Mono', monospace;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
   }
-
   .input-wrapper input:focus {
-    border-color: rgba(255,255,255,0.15);
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.035);
   }
-
   .input-wrapper input::placeholder {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
   }
 
   .eye-btn {
     position: absolute;
-    right: 14px;
+    right: 13px;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--muted);
-    font-size: 18px;
-    line-height: 1;
-    padding: 4px;
+    padding: 4px 6px;
     transition: color 0.2s;
-    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+  .eye-btn:hover { color: var(--text); }
+  .eye-icon {
+    width: 17px; height: 17px;
+    fill: none; stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
-  .eye-btn:hover { color: var(--text); }
-
   /* Strength bar */
-  .strength-section {
-    margin-top: 16px;
+  .strength-row {
+    margin-top: 14px;
     display: flex;
     align-items: center;
     gap: 12px;
   }
-
   .bar-track {
     flex: 1;
-    height: 4px;
+    height: 3px;
     background: rgba(255,255,255,0.06);
     border-radius: 2px;
     overflow: hidden;
   }
-
   .bar-fill {
     height: 100%;
     width: 0%;
     border-radius: 2px;
-    transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s ease;
-    background: var(--c0);
+    transition: width 0.45s cubic-bezier(0.34,1.4,0.64,1), background 0.35s;
   }
-
   .strength-label {
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    min-width: 80px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    min-width: 82px;
     text-align: right;
     color: var(--muted);
     transition: color 0.3s;
   }
 
-  /* Criteria checklist */
+  /* Section label */
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Composition */
+  .composition-section {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .comp-bar {
+    height: 6px;
+    border-radius: 3px;
+    display: flex;
+    overflow: hidden;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 10px;
+  }
+  .comp-seg { height: 100%; transition: width 0.4s ease; }
+  .seg-upper  { background: #f97316; }
+  .seg-lower  { background: #eab308; }
+  .seg-digit  { background: #22c55e; }
+  .seg-symbol { background: #06b6d4; }
+
+  .comp-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+  }
+  .legend-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .legend-val { color: var(--text); margin-left: 2px; }
+
+  /* Criteria */
   .criteria {
-    padding: 20px 28px;
+    padding: 18px 24px;
     border-bottom: 1px solid var(--border);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 9px;
   }
-
   .criterion {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     transition: color 0.3s;
     font-family: 'Space Mono', monospace;
   }
-
   .criterion.met { color: var(--text); }
-
   .criterion-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px; height: 5px;
     border-radius: 50%;
-    background: var(--muted);
+    background: var(--muted2);
     transition: background 0.3s, box-shadow 0.3s;
     flex-shrink: 0;
   }
-
   .criterion.met .criterion-dot {
-    background: var(--c3);
-    box-shadow: 0 0 6px var(--glow2);
+    background: #22c55e;
+    box-shadow: 0 0 5px rgba(34,197,94,0.5);
   }
 
-  /* Automata section */
-  .automata-section {
-    padding: 24px 28px 28px;
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
   }
-
-  .section-label {
+  .stat-cell {
+    flex: 1;
+    padding: 14px 18px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-label {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
+    font-size: 9px;
+    letter-spacing: 0.18em;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 5px;
+  }
+  .stat-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    transition: color 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .automata-svg-wrapper {
-    width: 100%;
+  /* Automata */
+  .automata-section {
+    padding: 20px 24px 22px;
+    border-bottom: 1px solid var(--border);
   }
+  svg.automata { width: 100%; height: auto; overflow: visible; }
 
-  svg.automata {
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-
-  /* SVG state styles */
   .state-ring {
     fill: none;
     stroke: rgba(255,255,255,0.08);
     stroke-width: 1.5;
     transition: stroke 0.35s, stroke-width 0.35s;
   }
-
-  .state-bg {
-    fill: rgba(255,255,255,0.03);
-    transition: fill 0.35s;
-  }
-
+  .state-bg { fill: rgba(255,255,255,0.03); transition: fill 0.35s; }
   .state-label {
     font-family: 'Space Mono', monospace;
     font-size: 11px;
-    fill: rgba(255,255,255,0.3);
+    fill: rgba(255,255,255,0.25);
     text-anchor: middle;
     dominant-baseline: middle;
     transition: fill 0.35s;
-    letter-spacing: 0.05em;
   }
-
   .state-sublabel {
     font-family: 'Space Mono', monospace;
-    font-size: 7.5px;
-    fill: rgba(255,255,255,0.18);
+    font-size: 7px;
+    fill: rgba(255,255,255,0.15);
     text-anchor: middle;
     dominant-baseline: middle;
     transition: fill 0.35s;
   }
+  .state-group.active .state-label { fill: #fff; }
+  .state-group.active .state-sublabel { fill: rgba(255,255,255,0.65); }
 
-  .state-group.active .state-ring {
-    stroke-width: 2.5;
-  }
-
-  .state-group.active .state-bg {
-    /* dynamic via JS */
-  }
-
-  .state-group.active .state-label {
-    fill: #fff;
-  }
-
-  .state-group.active .state-sublabel {
-    fill: rgba(255,255,255,0.7);
-  }
-
-  /* Accept state double ring */
   .accept-ring {
     fill: none;
-    stroke: rgba(255,255,255,0.04);
+    stroke: rgba(255,255,255,0.05);
     stroke-width: 1;
     transition: stroke 0.35s;
   }
+  .state-group.active .accept-ring { stroke: rgba(255,255,255,0.22); }
 
-  .state-group.active .accept-ring {
-    stroke: rgba(255,255,255,0.2);
-  }
-
-  /* Arrows */
   .arrow-path {
     fill: none;
-    stroke: rgba(255,255,255,0.1);
+    stroke: rgba(255,255,255,0.08);
     stroke-width: 1.5;
-    transition: stroke 0.35s, stroke-dashoffset 0.5s;
+    transition: stroke 0.35s;
     marker-end: url(#arrowhead);
     stroke-dasharray: 120;
     stroke-dashoffset: 0;
   }
-
-  .arrow-path.active {
-    stroke-dashoffset: 120;
-    animation: dashFlow 0.6s ease forwards;
-  }
-
+  .arrow-path.active { animation: dashFlow 0.55s ease forwards; }
   @keyframes dashFlow {
     from { stroke-dashoffset: 120; }
-    to { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 0; }
   }
 
   .arrow-label {
     font-family: 'Space Mono', monospace;
     font-size: 8px;
-    fill: rgba(255,255,255,0.2);
+    fill: rgba(255,255,255,0.13);
     text-anchor: middle;
     transition: fill 0.35s;
   }
 
-  .arrow-label.active {
-    fill: rgba(255,255,255,0.6);
+  .pulse-ring { fill: none; stroke-width: 1; opacity: 0; pointer-events: none; }
+  .state-group.active .pulse-ring { animation: pulseExpand 1.6s ease-out infinite; }
+  @keyframes pulseExpand {
+    0%   { r: 28; opacity: 0.5; stroke-width: 1.5; }
+    100% { r: 48; opacity: 0;   stroke-width: 0.5; }
   }
 
-  /* Copy button */
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
+  /* Actions */
+  .actions-section { padding: 18px 24px; }
+  .actions { display: flex; gap: 8px; }
   .action-btn {
     flex: 1;
-    padding: 10px;
+    padding: 10px 12px;
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--muted);
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    letter-spacing: 0.07em;
     cursor: pointer;
     transition: all 0.2s;
     text-transform: uppercase;
+    white-space: nowrap;
   }
-
   .action-btn:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.07);
     color: var(--text);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.14);
+  }
+  .action-btn.copied {
+    color: #22c55e;
+    border-color: rgba(34,197,94,0.4);
+    background: rgba(34,197,94,0.07);
+  }
+  .action-btn.saved {
+    color: #06b6d4;
+    border-color: rgba(6,182,212,0.4);
+    background: rgba(6,182,212,0.07);
   }
 
-  .action-btn.success {
-    color: var(--c3);
-    border-color: var(--c3);
-    background: rgba(34,197,94,0.08);
+  /* History card */
+  .history-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .history-header {
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .history-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .history-clear {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+  }
+  .history-clear:hover { color: var(--text); }
+
+  .history-list { max-height: 210px; overflow-y: auto; }
+  .history-list::-webkit-scrollbar { width: 3px; }
+  .history-list::-webkit-scrollbar-track { background: transparent; }
+  .history-list::-webkit-scrollbar-thumb { background: var(--muted2); border-radius: 2px; }
+
+  .history-empty {
+    padding: 22px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .history-item {
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideIn 0.22s ease;
+  }
+  .history-item:last-child { border-bottom: none; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .history-mask {
+    flex: 1;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .history-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+  .history-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .history-bits {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .history-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
   }
 
   /* Footer */
   .footer {
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 2px;
   }
-
   .footer-note {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: 9px;
     color: var(--muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
   }
-
-  .footer-links {
-    display: flex;
-    gap: 12px;
-  }
-
+  .footer-links { display: flex; gap: 14px; }
   .footer-links a {
     color: var(--muted);
-    font-size: 14px;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--text); }
-
-  /* Entropy display */
-  .entropy-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 28px;
-    border-top: 1px solid var(--border);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .entropy-label {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.05em;
   }
-
-  .entropy-value {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    color: var(--text);
-    transition: color 0.3s;
-  }
-
-  /* Pulse animation for active state */
-  @keyframes statePulse {
-    0% { r: 28; opacity: 0.6; }
-    100% { r: 40; opacity: 0; }
-  }
-
-  .pulse-ring {
-    fill: none;
-    stroke-width: 1;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .state-group.active .pulse-ring {
-    animation: pulseExpand 1.5s ease-out infinite;
-  }
-
-  @keyframes pulseExpand {
-    0% { r: 28; opacity: 0.5; stroke-width: 1.5; }
-    100% { r: 48; opacity: 0; stroke-width: 0.5; }
-  }
+  .footer-links a:hover { color: var(--text); }
 </style>
 </head>
 <body>
 
 <div class="wrapper">
+
+  <!-- Header -->
   <div class="header">
     <div class="header-tag">Finite Automata / DFA Simulation</div>
-    <h1>Password <span>Strength</span><br>Checker</h1>
+    <h1>Password <span>Strength</span> Checker</h1>
   </div>
 
+  <!-- Main Card -->
   <div class="card">
+
     <!-- Input -->
     <div class="input-section">
       <div class="input-wrapper">
-        <input type="password" id="passwordInput" placeholder="Enter your password..." autocomplete="new-password" oninput="analyze()" spellcheck="false">
-        <button class="eye-btn" id="eyeBtn" onclick="toggleVisibility()" title="Toggle visibility">👁</button>
+        <input type="password" id="passwordInput"
+               placeholder="Enter password..."
+               autocomplete="new-password"
+               oninput="analyze()"
+               spellcheck="false">
+        <button class="eye-btn" id="eyeBtn" onclick="toggleVisibility()" title="Toggle visibility">
+          <svg id="iconOpen" class="eye-icon" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="iconClosed" class="eye-icon" viewBox="0 0 24 24" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
       </div>
-      <div class="strength-section">
-        <div class="bar-track">
-          <div class="bar-fill" id="barFill"></div>
-        </div>
+      <div class="strength-row">
+        <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
         <div class="strength-label" id="strengthLabel">—</div>
+      </div>
+    </div>
+
+    <!-- Character Composition -->
+    <div class="composition-section">
+      <div class="section-label">Character Composition</div>
+      <div class="comp-bar">
+        <div class="comp-seg seg-upper"  id="seg-upper"  style="width:0%"></div>
+        <div class="comp-seg seg-lower"  id="seg-lower"  style="width:0%"></div>
+        <div class="comp-seg seg-digit"  id="seg-digit"  style="width:0%"></div>
+        <div class="comp-seg seg-symbol" id="seg-symbol" style="width:0%"></div>
+      </div>
+      <div class="comp-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#f97316"></div>
+          Uppercase&nbsp;<span class="legend-val" id="cnt-upper">0</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#eab308"></div>
+          Lowercase&nbsp;<span class="legend-val" id="cnt-lower">0</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#22c55e"></div>
+          Digits&nbsp;<span class="legend-val" id="cnt-digit">0</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#06b6d4"></div>
+          Symbols&nbsp;<span class="legend-val" id="cnt-symbol">0</span>
+        </div>
       </div>
     </div>
 
     <!-- Criteria -->
     <div class="criteria">
-      <div class="criterion" id="c-upper">
-        <div class="criterion-dot"></div>Uppercase letter
+      <div class="criterion" id="c-upper" ><div class="criterion-dot"></div>Uppercase letter</div>
+      <div class="criterion" id="c-lower" ><div class="criterion-dot"></div>Lowercase letter</div>
+      <div class="criterion" id="c-number"><div class="criterion-dot"></div>Number (0–9)</div>
+      <div class="criterion" id="c-symbol"><div class="criterion-dot"></div>Special symbol</div>
+      <div class="criterion" id="c-length"><div class="criterion-dot"></div>Min 8 characters</div>
+      <div class="criterion" id="c-long"  ><div class="criterion-dot"></div>12+ characters</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-label">Entropy</div>
+        <div class="stat-value" id="statEntropy">—</div>
       </div>
-      <div class="criterion" id="c-lower">
-        <div class="criterion-dot"></div>Lowercase letter
+      <div class="stat-cell">
+        <div class="stat-label">Est. Crack Time</div>
+        <div class="stat-value" id="statCrack">—</div>
       </div>
-      <div class="criterion" id="c-number">
-        <div class="criterion-dot"></div>Number (0–9)
-      </div>
-      <div class="criterion" id="c-symbol">
-        <div class="criterion-dot"></div>Special symbol
-      </div>
-      <div class="criterion" id="c-length">
-        <div class="criterion-dot"></div>Min 8 characters
-      </div>
-      <div class="criterion" id="c-long">
-        <div class="criterion-dot"></div>12+ characters
+      <div class="stat-cell">
+        <div class="stat-label">Length</div>
+        <div class="stat-value" id="statLength">—</div>
       </div>
     </div>
 
-    <!-- Entropy -->
-    <div class="entropy-row">
-      <span class="entropy-label">Entropy</span>
-      <span class="entropy-value" id="entropyVal">— bits</span>
-    </div>
-
-    <!-- Automata -->
+    <!-- DFA -->
     <div class="automata-section">
       <div class="section-label">DFA State Transition</div>
-      <div class="automata-svg-wrapper">
-        <svg class="automata" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <marker id="arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-              <polygon points="0 0, 7 3.5, 0 7" fill="rgba(255,255,255,0.15)" id="arrowFill"/>
-            </marker>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
+      <svg class="automata" viewBox="0 0 500 145" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="rgba(255,255,255,0.12)" id="arrowFill"/>
+          </marker>
+        </defs>
 
-          <!-- Arrows -->
-          <!-- q0 → q1 -->
-          <path id="arrow01" class="arrow-path" d="M 88 80 L 152 80"/>
-          <text class="arrow-label" id="lbl01" x="120" y="72">upper</text>
+        <path id="arrow01" class="arrow-path" d="M 88 72 L 152 72"/>
+        <text class="arrow-label" id="lbl01" x="120" y="63">upper</text>
 
-          <!-- q1 → q2 -->
-          <path id="arrow12" class="arrow-path" d="M 208 80 L 272 80"/>
-          <text class="arrow-label" id="lbl12" x="240" y="72">digit</text>
+        <path id="arrow12" class="arrow-path" d="M 208 72 L 272 72"/>
+        <text class="arrow-label" id="lbl12" x="240" y="63">digit</text>
 
-          <!-- q2 → q3 -->
-          <path id="arrow23" class="arrow-path" d="M 328 80 L 392 80"/>
-          <text class="arrow-label" id="lbl23" x="360" y="72">symbol</text>
+        <path id="arrow23" class="arrow-path" d="M 328 72 L 392 72"/>
+        <text class="arrow-label" id="lbl23" x="360" y="63">symbol</text>
 
-          <!-- q3 → q4 (length) -->
-          <path id="arrow34" class="arrow-path" d="M 448 80 L 480 80"/>
-          <text class="arrow-label" id="lbl34" x="464" y="72">len≥8</text>
+        <g class="state-group" id="sg0">
+          <circle class="pulse-ring" cx="60" cy="72" r="28" stroke="rgba(255,255,255,0.3)" id="pulse0"/>
+          <circle class="state-bg"   cx="60" cy="72" r="28" id="bg0"/>
+          <circle class="state-ring" cx="60" cy="72" r="28" id="ring0"/>
+          <text class="state-label"    x="60" y="68">q0</text>
+          <text class="state-sublabel" x="60" y="80">start</text>
+        </g>
+        <g class="state-group" id="sg1">
+          <circle class="pulse-ring" cx="180" cy="72" r="28" stroke="rgba(255,255,255,0.3)" id="pulse1"/>
+          <circle class="state-bg"   cx="180" cy="72" r="28" id="bg1"/>
+          <circle class="state-ring" cx="180" cy="72" r="28" id="ring1"/>
+          <text class="state-label"    x="180" y="68">q1</text>
+          <text class="state-sublabel" x="180" y="80">upper</text>
+        </g>
+        <g class="state-group" id="sg2">
+          <circle class="pulse-ring" cx="300" cy="72" r="28" stroke="rgba(255,255,255,0.3)" id="pulse2"/>
+          <circle class="state-bg"   cx="300" cy="72" r="28" id="bg2"/>
+          <circle class="state-ring" cx="300" cy="72" r="28" id="ring2"/>
+          <text class="state-label"    x="300" y="68">q2</text>
+          <text class="state-sublabel" x="300" y="80">+digit</text>
+        </g>
+        <g class="state-group" id="sg3">
+          <circle class="pulse-ring" cx="420" cy="72" r="28" stroke="rgba(255,255,255,0.3)" id="pulse3"/>
+          <circle class="state-bg"   cx="420" cy="72" r="28" id="bg3"/>
+          <circle class="state-ring" cx="420" cy="72" r="28" id="ring3"/>
+          <circle class="accept-ring" id="acceptRing" cx="420" cy="72" r="21"/>
+          <text class="state-label"    x="420" y="68">q3</text>
+          <text class="state-sublabel" x="420" y="80">accept</text>
+        </g>
 
-          <!-- States -->
-          <!-- q0 -->
-          <g class="state-group" id="sg0">
-            <circle class="pulse-ring" cx="60" cy="80" r="28" stroke="rgba(255,255,255,0.3)" id="pulse0"/>
-            <circle class="state-bg" cx="60" cy="80" r="28" id="bg0"/>
-            <circle class="state-ring" cx="60" cy="80" r="28" id="ring0"/>
-            <text class="state-label" x="60" y="76" id="lq0">q₀</text>
-            <text class="state-sublabel" x="60" y="88" id="sq0">start</text>
-          </g>
+        <text font-family="'Space Mono',monospace" font-size="7" fill="rgba(255,255,255,0.07)" x="60"  y="114" text-anchor="middle">WEAK</text>
+        <text font-family="'Space Mono',monospace" font-size="7" fill="rgba(255,255,255,0.07)" x="180" y="114" text-anchor="middle">FAIR</text>
+        <text font-family="'Space Mono',monospace" font-size="7" fill="rgba(255,255,255,0.07)" x="300" y="114" text-anchor="middle">STRONG</text>
+        <text font-family="'Space Mono',monospace" font-size="7" fill="rgba(255,255,255,0.07)" x="420" y="114" text-anchor="middle">ACCEPT</text>
+      </svg>
+    </div>
 
-          <!-- q1 -->
-          <g class="state-group" id="sg1">
-            <circle class="pulse-ring" cx="180" cy="80" r="28" stroke="rgba(255,255,255,0.3)" id="pulse1"/>
-            <circle class="state-bg" cx="180" cy="80" r="28" id="bg1"/>
-            <circle class="state-ring" cx="180" cy="80" r="28" id="ring1"/>
-            <text class="state-label" x="180" y="76" id="lq1">q₁</text>
-            <text class="state-sublabel" x="180" y="88" id="sq1">upper</text>
-          </g>
-
-          <!-- q2 -->
-          <g class="state-group" id="sg2">
-            <circle class="pulse-ring" cx="300" cy="80" r="28" stroke="rgba(255,255,255,0.3)" id="pulse2"/>
-            <circle class="state-bg" cx="300" cy="80" r="28" id="bg2"/>
-            <circle class="state-ring" cx="300" cy="80" r="28" id="ring2"/>
-            <text class="state-label" x="300" y="76" id="lq2">q₂</text>
-            <text class="state-sublabel" x="300" y="88" id="sq2">+digit</text>
-          </g>
-
-          <!-- q3 -->
-          <g class="state-group" id="sg3">
-            <circle class="pulse-ring" cx="420" cy="80" r="28" stroke="rgba(255,255,255,0.3)" id="pulse3"/>
-            <circle class="state-bg" cx="420" cy="80" r="28" id="bg3"/>
-            <circle class="state-ring" cx="420" cy="80" r="28" id="ring3"/>
-            <text class="state-label" x="420" y="76" id="lq3">q₃</text>
-            <text class="state-sublabel" x="420" y="88" id="sq3">+symbol</text>
-          </g>
-
-          <!-- q4 (final/accepting) — shown as label at right edge with double ring -->
-          <!-- We embed q4 info inside q3's sublabel update in JS since 5 states don't fit -->
-
-          <!-- State index labels below -->
-          <text font-family="'Space Mono',monospace" font-size="8" fill="rgba(255,255,255,0.1)" x="60" y="120" text-anchor="middle">WEAK</text>
-          <text font-family="'Space Mono',monospace" font-size="8" fill="rgba(255,255,255,0.1)" x="180" y="120" text-anchor="middle">FAIR</text>
-          <text font-family="'Space Mono',monospace" font-size="8" fill="rgba(255,255,255,0.1)" x="300" y="120" text-anchor="middle">STRONG</text>
-          <text font-family="'Space Mono',monospace" font-size="8" fill="rgba(255,255,255,0.1)" x="420" y="120" text-anchor="middle">ACCEPT</text>
-
-          <!-- Accept double ring on q3 -->
-          <circle class="accept-ring" id="acceptRing" cx="420" cy="80" r="22"/>
-        </svg>
-      </div>
-
-      <!-- Actions -->
+    <!-- Actions -->
+    <div class="actions-section">
       <div class="actions">
-        <button class="action-btn" id="copyBtn" onclick="copyPassword()">Copy Password</button>
-        <button class="action-btn" onclick="generatePassword()">Generate Strong</button>
+        <button class="action-btn" id="copyBtn"  onclick="copyPassword()">Copy</button>
+        <button class="action-btn"                onclick="generatePassword()">Generate Strong</button>
+        <button class="action-btn" id="saveBtn"   onclick="saveToHistory()">Save to Log</button>
       </div>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- Session History -->
+  <div class="history-card">
+    <div class="history-header">
+      <span class="history-title">Session Log</span>
+      <button class="history-clear" onclick="clearHistory()">Clear All</button>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="history-empty" id="historyEmpty">No entries saved yet</div>
     </div>
   </div>
 
@@ -591,35 +665,44 @@
   <div class="footer">
     <span class="footer-note">DFA simulation · 4-state model</span>
     <div class="footer-links">
-      <a href="mailto:ss6015@srmist.edu.in" title="Email">✉</a>
-      <a href="https://www.linkedin.com/in/usersourav" target="_blank" title="LinkedIn">in</a>
-      <a href="https://github.com/Usersourav" target="_blank" title="GitHub">⌥</a>
+      <a href="mailto:ss6015@srmist.edu.in">Email</a>
+      <a href="https://www.linkedin.com/in/usersourav" target="_blank">LinkedIn</a>
+      <a href="https://github.com/Usersourav" target="_blank">GitHub</a>
     </div>
   </div>
+
 </div>
 
 <script>
-  // ─── State colors ────────────────────────────────────────────
   const STATE_COLORS = [
-    { stroke: '#f97316', bg: 'rgba(249,115,22,0.12)', pulse: 'rgba(249,115,22,0.4)', arrow: 'rgba(249,115,22,0.7)' },
-    { stroke: '#eab308', bg: 'rgba(234,179,8,0.12)',  pulse: 'rgba(234,179,8,0.4)',  arrow: 'rgba(234,179,8,0.7)'  },
-    { stroke: '#22c55e', bg: 'rgba(34,197,94,0.12)',  pulse: 'rgba(34,197,94,0.4)',  arrow: 'rgba(34,197,94,0.7)'  },
-    { stroke: '#06b6d4', bg: 'rgba(6,182,212,0.12)',  pulse: 'rgba(6,182,212,0.4)',  arrow: 'rgba(6,182,212,0.7)'  },
+    { stroke:'#f97316', bg:'rgba(249,115,22,0.11)',  pulse:'rgba(249,115,22,0.38)', arrow:'rgba(249,115,22,0.75)' },
+    { stroke:'#eab308', bg:'rgba(234,179,8,0.11)',   pulse:'rgba(234,179,8,0.38)',  arrow:'rgba(234,179,8,0.75)'  },
+    { stroke:'#22c55e', bg:'rgba(34,197,94,0.11)',   pulse:'rgba(34,197,94,0.38)',  arrow:'rgba(34,197,94,0.75)'  },
+    { stroke:'#06b6d4', bg:'rgba(6,182,212,0.11)',   pulse:'rgba(6,182,212,0.38)', arrow:'rgba(6,182,212,0.75)'  },
   ];
-
-  const STRENGTH_LABELS = ['WEAK', 'FAIR', 'STRONG', 'VERY STRONG'];
-  const BAR_WIDTHS = ['20%', '45%', '72%', '100%'];
-  const BAR_COLORS = ['#f97316', '#eab308', '#22c55e', '#06b6d4'];
+  const LABELS = ['WEAK','FAIR','STRONG','VERY STRONG'];
+  const WIDTHS = ['18%','45%','72%','100%'];
+  const COLORS = ['#f97316','#eab308','#22c55e','#06b6d4'];
+  const BADGE  = [
+    'background:rgba(249,115,22,0.13);color:#f97316',
+    'background:rgba(234,179,8,0.13);color:#eab308',
+    'background:rgba(34,197,94,0.13);color:#22c55e',
+    'background:rgba(6,182,212,0.13);color:#06b6d4',
+  ];
+  const GUESSES_PER_SEC = 1e11; // fast offline attack
 
   let visible = false;
+  let log = [];
 
+  /* ── Eye toggle ─────────────────────────── */
   function toggleVisibility() {
     visible = !visible;
-    const inp = document.getElementById('passwordInput');
-    inp.type = visible ? 'text' : 'password';
-    document.getElementById('eyeBtn').textContent = visible ? '🙈' : '👁';
+    document.getElementById('passwordInput').type = visible ? 'text' : 'password';
+    document.getElementById('iconOpen').style.display   = visible ? 'none'  : 'block';
+    document.getElementById('iconClosed').style.display = visible ? 'block' : 'none';
   }
 
+  /* ── Entropy ────────────────────────────── */
   function calcEntropy(pwd) {
     if (!pwd) return 0;
     let pool = 0;
@@ -630,9 +713,25 @@
     return Math.floor(pwd.length * Math.log2(pool || 1));
   }
 
+  /* ── Crack time ─────────────────────────── */
+  function crackTime(bits) {
+    if (!bits) return '—';
+    const s = Math.pow(2, bits) / GUESSES_PER_SEC / 2;
+    if (s < 1)         return '< 1s';
+    if (s < 60)        return `${Math.round(s)}s`;
+    if (s < 3600)      return `${Math.round(s/60)}m`;
+    if (s < 86400)     return `${Math.round(s/3600)}h`;
+    if (s < 2592000)   return `${Math.round(s/86400)}d`;
+    if (s < 31536000)  return `${Math.round(s/2592000)} mo`;
+    if (s < 3.154e9)   return `${Math.round(s/31536000)} yr`;
+    if (s < 3.154e12)  return `${(s/3.154e9).toFixed(1)}k yr`;
+    if (s < 3.154e15)  return `${(s/3.154e12).toFixed(1)}M yr`;
+    return 'heat death';
+  }
+
+  /* ── Analyze ────────────────────────────── */
   function analyze() {
     const pwd = document.getElementById('passwordInput').value;
-
     const hasUpper  = /[A-Z]/.test(pwd);
     const hasLower  = /[a-z]/.test(pwd);
     const hasNumber = /[0-9]/.test(pwd);
@@ -640,135 +739,179 @@
     const hasLen8   = pwd.length >= 8;
     const hasLen12  = pwd.length >= 12;
 
-    // Criteria dots
-    setCriterion('c-upper',  hasUpper);
-    setCriterion('c-lower',  hasLower);
-    setCriterion('c-number', hasNumber);
-    setCriterion('c-symbol', hasSymbol);
-    setCriterion('c-length', hasLen8);
-    setCriterion('c-long',   hasLen12);
+    setCrit('c-upper',  hasUpper);
+    setCrit('c-lower',  hasLower);
+    setCrit('c-number', hasNumber);
+    setCrit('c-symbol', hasSymbol);
+    setCrit('c-length', hasLen8);
+    setCrit('c-long',   hasLen12);
 
-    // DFA state: 0→1→2→3 based on cumulative criteria
     let state = 0;
     if (hasUpper) state = 1;
     if (hasUpper && hasNumber) state = 2;
     if (hasUpper && hasNumber && hasSymbol && hasLen8) state = 3;
 
-    updateAutomata(state, pwd.length === 0);
+    updateDFA(state, !pwd);
 
-    // Bar
     const bar = document.getElementById('barFill');
     if (!pwd) {
       bar.style.width = '0%';
       document.getElementById('strengthLabel').textContent = '—';
       document.getElementById('strengthLabel').style.color = 'var(--muted)';
     } else {
-      bar.style.width = BAR_WIDTHS[state];
-      bar.style.background = BAR_COLORS[state];
-      document.getElementById('strengthLabel').textContent = STRENGTH_LABELS[state];
-      document.getElementById('strengthLabel').style.color = BAR_COLORS[state];
+      bar.style.width = WIDTHS[state];
+      bar.style.background = COLORS[state];
+      document.getElementById('strengthLabel').textContent = LABELS[state];
+      document.getElementById('strengthLabel').style.color = COLORS[state];
     }
 
-    // Entropy
+    // Composition
+    const total = pwd.length || 1;
+    const cU = (pwd.match(/[A-Z]/g)      || []).length;
+    const cL = (pwd.match(/[a-z]/g)      || []).length;
+    const cD = (pwd.match(/[0-9]/g)      || []).length;
+    const cS = (pwd.match(/[^a-zA-Z0-9]/g) || []).length;
+    const pct = v => pwd ? `${(v/total*100).toFixed(1)}%` : '0%';
+    document.getElementById('seg-upper').style.width  = pct(cU);
+    document.getElementById('seg-lower').style.width  = pct(cL);
+    document.getElementById('seg-digit').style.width  = pct(cD);
+    document.getElementById('seg-symbol').style.width = pct(cS);
+    document.getElementById('cnt-upper').textContent  = cU;
+    document.getElementById('cnt-lower').textContent  = cL;
+    document.getElementById('cnt-digit').textContent  = cD;
+    document.getElementById('cnt-symbol').textContent = cS;
+
+    // Stats
     const bits = calcEntropy(pwd);
-    document.getElementById('entropyVal').textContent = pwd ? `${bits} bits` : '— bits';
+    document.getElementById('statEntropy').textContent = pwd ? `${bits} bits` : '—';
+    document.getElementById('statCrack').textContent   = pwd ? crackTime(bits) : '—';
+    document.getElementById('statLength').textContent  = pwd ? `${pwd.length} chars` : '—';
   }
 
-  function setCriterion(id, met) {
-    const el = document.getElementById(id);
-    el.classList.toggle('met', met);
+  function setCrit(id, met) {
+    document.getElementById(id).classList.toggle('met', met);
   }
 
-  function updateAutomata(activeState, empty) {
-    const totalStates = 4;
-    const arrows = ['arrow01', 'arrow12', 'arrow23', 'arrow34'];
-    const labels  = ['lbl01',   'lbl12',   'lbl23',   'lbl34'];
+  /* ── DFA ────────────────────────────────── */
+  function updateDFA(activeState, empty) {
+    const arrows = ['arrow01','arrow12','arrow23'];
+    const lbls   = ['lbl01','lbl12','lbl23'];
 
-    // Reset all
-    for (let i = 0; i < totalStates; i++) {
-      const sg = document.getElementById(`sg${i}`);
-      sg.classList.remove('active');
+    for (let i = 0; i < 4; i++) {
+      document.getElementById(`sg${i}`).classList.remove('active');
       document.getElementById(`bg${i}`).style.fill = 'rgba(255,255,255,0.03)';
       document.getElementById(`ring${i}`).style.stroke = 'rgba(255,255,255,0.08)';
       document.getElementById(`ring${i}`).style.strokeWidth = '1.5';
-      document.getElementById(`pulse${i}`).style.stroke = 'rgba(255,255,255,0.2)';
+      document.getElementById(`pulse${i}`).style.stroke = 'rgba(255,255,255,0.13)';
     }
-
-    for (let i = 0; i < arrows.length; i++) {
-      const el = document.getElementById(arrows[i]);
-      el.style.stroke = 'rgba(255,255,255,0.1)';
+    arrows.forEach((a,i) => {
+      const el = document.getElementById(a);
+      el.style.stroke = 'rgba(255,255,255,0.08)';
       el.classList.remove('active');
-      document.getElementById(labels[i]).style.fill = 'rgba(255,255,255,0.15)';
-      document.getElementById(labels[i]).classList.remove('active');
-    }
-
-    document.getElementById('arrowFill').setAttribute('fill', 'rgba(255,255,255,0.15)');
+      document.getElementById(lbls[i]).style.fill = 'rgba(255,255,255,0.13)';
+    });
+    document.getElementById('arrowFill').setAttribute('fill','rgba(255,255,255,0.12)');
 
     if (empty) return;
 
     const c = STATE_COLORS[activeState];
-
-    // Activate states 0..activeState
     for (let i = 0; i <= activeState; i++) {
-      const sg = document.getElementById(`sg${i}`);
-      sg.classList.add('active');
+      document.getElementById(`sg${i}`).classList.add('active');
       document.getElementById(`bg${i}`).style.fill = i === activeState ? c.bg : 'rgba(255,255,255,0.05)';
-      const ringColor = i === activeState ? c.stroke : 'rgba(255,255,255,0.2)';
-      document.getElementById(`ring${i}`).style.stroke = ringColor;
+      document.getElementById(`ring${i}`).style.stroke = i === activeState ? c.stroke : 'rgba(255,255,255,0.18)';
       document.getElementById(`ring${i}`).style.strokeWidth = i === activeState ? '2.5' : '1.5';
-      document.getElementById(`pulse${i}`).style.stroke = i === activeState ? c.pulse : 'rgba(255,255,255,0.15)';
+      document.getElementById(`pulse${i}`).style.stroke = i === activeState ? c.pulse : 'rgba(255,255,255,0.08)';
     }
-
-    // Activate arrows 0..activeState-1
     for (let i = 0; i < activeState; i++) {
       const el = document.getElementById(arrows[i]);
       el.style.stroke = c.arrow;
       el.classList.remove('active');
-      void el.offsetWidth; // reflow
+      void el.offsetWidth;
       el.classList.add('active');
-      document.getElementById(labels[i]).style.fill = c.arrow;
-      document.getElementById(labels[i]).classList.add('active');
+      document.getElementById(lbls[i]).style.fill = c.arrow;
     }
-
     document.getElementById('arrowFill').setAttribute('fill', c.arrow);
   }
 
+  /* ── Copy ───────────────────────────────── */
   function copyPassword() {
     const pwd = document.getElementById('passwordInput').value;
     if (!pwd) return;
     navigator.clipboard.writeText(pwd).then(() => {
       const btn = document.getElementById('copyBtn');
-      btn.classList.add('success');
-      btn.textContent = 'Copied!';
-      setTimeout(() => {
-        btn.classList.remove('success');
-        btn.textContent = 'Copy Password';
-      }, 1800);
+      btn.classList.add('copied');
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = 'Copy'; }, 1800);
     });
   }
 
+  /* ── Generate ───────────────────────────── */
   function generatePassword() {
-    const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-    const lower   = 'abcdefghjkmnpqrstuvwxyz';
-    const digits  = '23456789';
-    const symbols = '!@#$%^&*-_+=?';
-    const all     = upper + lower + digits + symbols;
-    let pwd = '';
-    pwd += upper[Math.floor(Math.random() * upper.length)];
-    pwd += lower[Math.floor(Math.random() * lower.length)];
-    pwd += digits[Math.floor(Math.random() * digits.length)];
-    pwd += symbols[Math.floor(Math.random() * symbols.length)];
-    for (let i = 4; i < 14; i++) {
-      pwd += all[Math.floor(Math.random() * all.length)];
-    }
-    // Shuffle
-    pwd = pwd.split('').sort(() => Math.random() - 0.5).join('');
-    const input = document.getElementById('passwordInput');
-    input.value = pwd;
-    input.type = 'text';
-    visible = true;
-    document.getElementById('eyeBtn').textContent = '🙈';
+    const U = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const L = 'abcdefghjkmnpqrstuvwxyz';
+    const D = '23456789';
+    const S = '!@#$%^&*-_+=?';
+    const A = U + L + D + S;
+    let p = U[rn(U.length)] + L[rn(L.length)] + D[rn(D.length)] + S[rn(S.length)];
+    for (let i = 4; i < 14; i++) p += A[rn(A.length)];
+    p = p.split('').sort(() => Math.random() - 0.5).join('');
+    const inp = document.getElementById('passwordInput');
+    inp.value = p;
+    if (!visible) toggleVisibility();
     analyze();
+  }
+
+  function rn(n) { return Math.floor(Math.random() * n); }
+
+  /* ── History ────────────────────────────── */
+  function saveToHistory() {
+    const pwd = document.getElementById('passwordInput').value;
+    if (!pwd) return;
+
+    const hasUpper  = /[A-Z]/.test(pwd);
+    const hasNumber = /[0-9]/.test(pwd);
+    const hasSymbol = /[^a-zA-Z0-9]/.test(pwd);
+    const hasLen8   = pwd.length >= 8;
+
+    let state = 0;
+    if (hasUpper) state = 1;
+    if (hasUpper && hasNumber) state = 2;
+    if (hasUpper && hasNumber && hasSymbol && hasLen8) state = 3;
+
+    const bits = calcEntropy(pwd);
+    const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
+    log.unshift({ state, bits, time, len: pwd.length });
+    if (log.length > 10) log.pop();
+    renderHistory();
+
+    const btn = document.getElementById('saveBtn');
+    btn.classList.add('saved');
+    btn.textContent = 'Saved';
+    setTimeout(() => { btn.classList.remove('saved'); btn.textContent = 'Save to Log'; }, 1600);
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    if (!log.length) {
+      list.innerHTML = '<div class="history-empty" id="historyEmpty">No entries saved yet</div>';
+      return;
+    }
+    list.innerHTML = log.map(h => `
+      <div class="history-item">
+        <div class="history-mask">${'•'.repeat(Math.min(h.len, 14))}</div>
+        <div class="history-meta">
+          <span class="history-badge" style="${BADGE[h.state]}">${LABELS[h.state]}</span>
+          <span class="history-bits">${h.bits}b</span>
+          <span class="history-time">${h.time}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function clearHistory() {
+    log = [];
+    renderHistory();
   }
 </script>
 </body>
